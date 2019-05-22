@@ -1,0 +1,55 @@
+<?php
+    include 'koneksi.php';
+    if(isset($_POST['register'])){
+        $email = filter_input(INPUT_POST, 'email', FILTER_VALIDATE_EMAIL);
+        $username = filter_input(INPUT_POST, 'username', FILTER_SANITIZE_STRING);
+        $password = password_hash($_POST["password"], PASSWORD_DEFAULT);
+
+    $query = $db->prepare("INSERT INTO `user`(`email`, `username`, `password`) 
+            VALUES (:email, :username, :password)");
+    $stmt = $db->prepare($sql);
+
+    // bind parameter ke query
+    $params = array(
+        ":name" => $name,
+        ":username" => $username,
+        ":password" => $password,
+        ":email" => $email
+    );
+
+    // eksekusi query untuk menyimpan ke database
+    $saved = $stmt->execute($params); 
+
+    // jika query simpan berhasil, maka user sudah terdaftar
+    // maka alihkan ke halaman login
+    if($saved) header("Location: login.html ");
+}
+
+?>
+
+<!DOCTYPE html>
+<html>
+<head>
+  <title>login</title>
+  
+</head>
+<link rel="stylesheet" type="text/css" href="templatelogin.css">
+<body>
+<body>
+    
+    <div class="form-wrapper" id="wrapper-signup">
+        <img src='https://i.imgur.com/iqskGqe.jpg ' alt='bg2' />
+        <div class="content-wrapper" id="content-signin">
+            <h1>Register</h1>
+            <form class="form-login">
+                <input type="email" name="email" placeholder="email" class="email" />
+                <input type="text" name="username" placeholder="username" class="username" />
+                <input type="password" name="password" placeholder="password" class="password" />
+                <button type="submit" class="">SIGN UP</button>
+            </form>
+            <p>Got account? <a href="#wrapper-login">Sign in</a></p>
+            <a class="link" href="index.html"><font color="white">Beranda</a>
+        </div>
+    </div>
+</body>
+</html>
